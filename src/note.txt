@@ -1,0 +1,2 @@
+folders like _components or _utils as a convention to mark internal
+code and make it clear that the folder is not intended to represent a route. (This folder not for routing)
