@@ -1,13 +1,17 @@
+"use client";
 
-import React, { useState } from 'react';
-function AddFoodItems({setAddFoodItems}) {
-
+import React, { useEffect, useState } from 'react';
+import { useParams } from 'next/navigation';
+import { useRouter } from 'next/navigation';
+function UpdateFoodItem() {
     const [foodData, setFoodData] = useState({
         name: "",
         price: "",
         imagePath: "",
         description: ""
     })
+    const { id } = useParams();
+    const route = useRouter();
     const [error, setError] = useState({});
 
     const handleChange = (e) => {
@@ -19,6 +23,25 @@ function AddFoodItems({setAddFoodItems}) {
         })
     }
 
+
+    const getFoodById = async () => {
+
+        try {
+            const response = await fetch(`http://localhost:3000/api/food/edit/${id}`);
+            const {result,success} = await response.json();
+            if(success){
+
+                setFoodData({
+                    name: result.name,
+                    price: result.price,
+                    imagePath: result.img_path,
+                    description: result.description,
+                })
+            }
+        } catch (error) {
+            console.error(error);
+        }
+    }
 
     const validateData = () => {
         let error = {};
@@ -44,7 +67,7 @@ function AddFoodItems({setAddFoodItems}) {
         return isError;
     }
 
-    const handleSubmit = async () => {
+    const handleUpdate = async () => {
         if (!validateData()) {
             return;
         }
@@ -53,14 +76,14 @@ function AddFoodItems({setAddFoodItems}) {
 
             let localData = localStorage.getItem("resturantUser");
             localData = JSON.parse(localData);
-            const { 
+            const {
                 name,
                 price,
                 description,
-                imagePath, 
+                imagePath,
             } = foodData;
-            let response = await fetch("http://localhost:3000/api/food", {
-                method: "POST",
+            let response = await fetch(`http://localhost:3000/api/food/${id}`, {
+                method: "put",
                 headers: {
                     "Content-Type": "application/json"
                 },
@@ -73,16 +96,15 @@ function AddFoodItems({setAddFoodItems}) {
                 }),
             });
             response = await response.json();
-            if(response.success){
-                alert("Food item added successfully");
+            if (response.success) {
+                alert("Food item Updated successfully");
                 setFoodData({
                     name: "",
                     price: "",
                     imagePath: "",
                     description: ""
                 })
-                setAddFoodItems(false);
-            }else{
+            } else {
                 alert("Something went wrong");
             }
         } catch (error) {
@@ -91,12 +113,14 @@ function AddFoodItems({setAddFoodItems}) {
 
     }
 
-
+    useEffect(() => {
+        getFoodById();
+    }, [])
     return (
         <>
 
             <div className="container">
-                <h2>Add Food Items</h2>
+                <h2>Update Food Item</h2>
                 <div className="input-wrapper">
                     <input name="name" value={foodData.name} onChange={handleChange} type="text" placeholder="Enter Food Name" className="input-field" />
                 </div>
@@ -115,11 +139,12 @@ function AddFoodItems({setAddFoodItems}) {
                 {error.description && <span style={{ color: "red" }}>{error.description}</span>}
                 <div>
 
-                    <button onClick={handleSubmit} className="button">Add Food item</button>
+                    <button onClick={handleUpdate} className="button">Update Food Item</button>
+                    <button onClick={() => route.push("/resturant/dashboard")} className="button">Cancel</button>
                 </div>
             </div >
         </>
     )
 }
 
-export default AddFoodItems;
+export default UpdateFoodItem;

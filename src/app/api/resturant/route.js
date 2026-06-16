@@ -7,7 +7,6 @@ export async function GET() {
   const db = await mongoose.connect(connectionStr);
 
   const data = await resturantSchema.find();
-  console.log(data);
   return NextResponse.json({ result: "true" });
 }
 
