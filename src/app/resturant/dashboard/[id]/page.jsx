@@ -82,7 +82,7 @@ function UpdateFoodItem() {
                 description,
                 imagePath,
             } = foodData;
-            let response = await fetch(`http://localhost:3000/api/food/${id}`, {
+            let response = await fetch(`http://localhost:3000/api/food/edit/${id}`, {
                 method: "put",
                 headers: {
                     "Content-Type": "application/json"
@@ -104,6 +104,7 @@ function UpdateFoodItem() {
                     imagePath: "",
                     description: ""
                 })
+                route.push("/resturant/dashboard");
             } else {
                 alert("Something went wrong");
             }

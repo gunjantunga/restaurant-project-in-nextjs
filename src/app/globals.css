@@ -1,3 +1,6 @@
+*:focus{
+    outline: none;
+}
 .input-wrapper{
     margin: 10px;
 }
@@ -30,4 +33,82 @@ table , th , td{
 
 table,th, button{
     margin:5px;
+}
+
+.main-page-banner{
+    background-image: url("https://t4.ftcdn.net/jpg/03/53/68/47/240_F_353684779_sXaY7PHyX6Xb9okW7qjVfARj96YIJMZ1.jpg");
+    background-color: rgb(0, 0, 0,0.4);
+    background-blend-mode: multiply;
+    padding: 25px;
+    height: 250px;
+    color: white;
+    
+}
+.main-page-banner h1{
+    text-align: center;
+}
+.input-wrapper{
+    background-color: #fff;
+    padding: 5px;
+    border:1px solid #ccc;
+    border-radius: 5px;
+    margin:auto;
+    width: 70%;
+}
+.select-input{
+    height:40px;
+    border:none;
+    width:30%;
+}
+
+.search-input{
+    height:40px;
+    border:none;
+    width:30%;
+    border-left:2px solid #ccc;
+    padding-left: 10;
+}
+.location-list{
+    color: #000;
+    list-style: none;
+    text-align: left;
+    position: absolute;
+    background-color: #fff;
+    padding: 0;
+    margin: 0;
+    margin-left: -5px;
+    border: 1px solid black;
+}
+.location-list li{
+    width: 180px;
+    padding:5px;
+    border-bottom: 1px solid lightgray;
+    cursor: pointer;
+}
+
+.resturant-list-container{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    margin-top: 40px;
+    margin-bottom: 50px;
+    color: #ffff;
+
+}
+.resturant-wrapper{
+    width:45%;
+    background-color: orange;
+    margin:10px;
+    padding:10px;
+    border: 1px solid #aaa;
+    border-radius: 5px;
+    cursor: pointer;
+}
+.resturant-wrapper .heading-wrapper, .resturant-wrapper .address-wrapper{
+    padding-left: 15px;
+    display: flex;
+    justify-content: flex-start;
+}
+.resturant-wrapper h5{
+    margin-left: 15px;
 }
