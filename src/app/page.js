@@ -53,19 +53,8 @@ export default function Home() {
 
   const handleRestaurantSearch = (e) => {
     const value = e.target.value;
-
     setRestaurantSearch(value);
 
-    if (value.trim() === "") {
-      fetchRestaurants({
-        location: selectedCity,
-      });
-    } else {
-      betterfunc({
-        restaurant: value,
-        location: selectedCity,
-      });
-    }
   };
 
   const fetchRestaurants = async ({ location, restaurant } = {}) => {
@@ -88,33 +77,26 @@ export default function Home() {
 
       let response = await fetch(url);
       response = await response.json();
-
       setRestaurants(response.result);
     } catch (err) {
       console.error(err);
     }
   };
 
-
-  function debounce(func, delay) {
-
-    let timer;
-
-    return function (...args) {
-      clearTimeout(timer);
-      timer = setTimeout(() => {
-        func(...args);
-      }, delay);
-    };
-  }
-
-
-  const betterfunc = debounce(fetchRestaurants, 500);
-
   useEffect(() => {
     fetchCities();
-    fetchRestaurants({})
   }, []);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      fetchRestaurants({
+        restaurant: restaurantSearch,
+        location: selectedCity,
+      });
+    }, 500);
+
+    return () => clearTimeout(timer);
+  }, [restaurantSearch, selectedCity]);
 
   return (
     <div className={styles.page}>

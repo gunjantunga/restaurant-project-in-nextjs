@@ -30,8 +30,8 @@ function ResturantHeader() {
         <div className='header-wrapper'>
             <div className="logo">
 
-                <Image
-                    src="/pexels-n-voitkevich-8939518.png"
+                <img
+                    src="https://thumbs.dreamstime.com/b/food-delivery-logo-design-template-134749604.jpg"
                     alt="logo"
                     width={50}
                     height={50}
