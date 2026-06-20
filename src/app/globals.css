@@ -35,16 +35,19 @@ table,th, button{
     margin:5px;
 }
 
-.main-page-banner{
+.main-page-banner,.food-page-banner{
     background-image: url("https://t4.ftcdn.net/jpg/03/53/68/47/240_F_353684779_sXaY7PHyX6Xb9okW7qjVfARj96YIJMZ1.jpg");
     background-color: rgb(0, 0, 0,0.4);
     background-blend-mode: multiply;
     padding: 25px;
-    height: 250px;
+    height: 200px;
     color: white;
     
 }
 .main-page-banner h1{
+    text-align: center;
+}
+.food-page-banner h1{
     text-align: center;
 }
 .input-wrapper{
@@ -111,4 +114,41 @@ table,th, button{
 }
 .resturant-wrapper h5{
     margin-left: 15px;
+}
+.food-page-banner{
+    font-size: 25px;
+}
+
+.restaurant-details-wrapper{
+    display: flex;
+    background-color: orange;
+
+}
+
+.restaurant-details-wrapper h4{
+    width: 50%;
+}
+
+.food-item-wrapper{
+    margin: 50px 0px;
+}
+.food-item-wrapper .list-item{
+    padding: 20px;
+    color:orange;
+    font-weight: bold;
+    border-bottom: 1px solid orange;
+    display: flex;
+    text-transform: capitalize;
+}
+.food-item-wrapper .list-item button{
+    color: #fff;
+    border: none;
+    background-color: orange;
+    padding: 5px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+.food-item-wrapper .list-item .description{
+    font-weight: lighter;
+    color: gray;
 }

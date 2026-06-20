@@ -27,7 +27,6 @@ export async function PUT(request, content) {
     let success;
 
     const food = await foodSchema.findOneAndUpdate({ _id: new mongoose.Types.ObjectId(data.id) }, payload);
-    console.log("food-->",food)
     if (food) {
         success = true;
     } else {

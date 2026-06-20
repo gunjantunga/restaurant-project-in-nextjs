@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import styles from "./page.module.css";
 import CustomerDashboard from "./_components/CustomerDashboard";
 import ResturantFooter from "./_components/ResturantFooter";
+import { useRouter } from 'next/navigation';
 
 export default function Home() {
 
@@ -13,7 +14,7 @@ export default function Home() {
 
   const [restaurantSearch, setRestaurantSearch] = useState("");
   const [restaurants, setRestaurants] = useState([]);
-
+  const route = useRouter();
 
 
   const handleSearchCities = (e) => {
@@ -105,7 +106,6 @@ export default function Home() {
 
         <h1>Food Delivery App</h1>
         <div className="input-wrapper">
-
           <input
             type="text"
             value={inputSearch}
@@ -124,7 +124,7 @@ export default function Home() {
       <div className="resturant-list-container">
         {
           restaurants.map((restaurant) => (
-            <div className="resturant-wrapper" key={restaurant._id}>
+            <div  onClick={()=>route.push(`explore/${restaurant.resturantName}?id=${restaurant._id}`)} className="resturant-wrapper" key={restaurant._id}>
               <div className="heading-wrapper">
                 <h3>{restaurant.resturantName}</h3>
                 <h5>Contact : {restaurant.contactNumber}</h5>
