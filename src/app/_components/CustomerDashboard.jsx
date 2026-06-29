@@ -4,7 +4,7 @@ import Link from "next/link";
 import "../resturant/style.css";
 
 
-function CustomerDashboard({ cartDetails }) {
+function CustomerDashboard({ cartDetails, removeCartData }) {
 
 
     const [cartCount, setCartCount] = useState(0);
@@ -46,6 +46,25 @@ function CustomerDashboard({ cartDetails }) {
         setCartCount(items.length);
     }, []);
 
+
+    useEffect(() => {
+
+        if (!removeCartData) return;
+
+        const remainingItems = cartItem.filter(
+            item => item._id !== removeCartData
+        );
+
+        if (remainingItems.length === 0) {
+            localStorage.removeItem("cart");
+        } else {
+            localStorage.setItem("cart", JSON.stringify(remainingItems));
+        }
+
+        setCartItem(remainingItems);
+        setCartCount(remainingItems.length);
+
+    }, [removeCartData]);
 
     return (
 

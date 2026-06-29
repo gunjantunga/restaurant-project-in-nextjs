@@ -15,6 +15,12 @@ function RestaurantFoodExplore() {
     const searchParams = useSearchParams();
     const id = searchParams.get("id");
 
+
+    const [cartIds, setCartIds] = useState([]);
+    const [removeCartData, setRemoveCartData] = useState();
+
+
+
     async function getAllFoodsByRestaurant() {
 
         try {
@@ -34,17 +40,27 @@ function RestaurantFoodExplore() {
 
     useEffect(() => {
         getAllFoodsByRestaurant();
+        const cart = JSON.parse(localStorage.getItem("cart")) || [];
+        setCartIds(cart.map(item => item._id));
     }, [])
 
 
     const addToCart = (item) => {
         setCartDetails(item);
+        setCartIds(prev => [...prev, item._id]);
+        setRemoveCartData();
+
     }
 
+    const handleRemoveCartItem = (id) => {
+        setRemoveCartData(id);
+        setCartIds(prev => prev.filter(item => item !== id));
+        setCartDetails();
+    }
 
     return (
         <div>
-            <CustomerDashboard cartDetails={cartDetails}/>
+            <CustomerDashboard cartDetails={cartDetails} removeCartData={removeCartData} />
             <div className="food-page-banner">
                 <h1>{decodeURI(name)}</h1>
             </div>
@@ -61,7 +77,12 @@ function RestaurantFoodExplore() {
                         <div>{food.name}</div>
                         <div>{food.price}</div>
                         <div className="description">{food.description}</div>
-                        <button onClick={() => addToCart(food)}>Add To Cart</button>
+                        {
+                            cartIds.includes(food._id) ?
+                                <button onClick={() => handleRemoveCartItem(food._id)}>Remove from Cart</button> :
+                                <button onClick={() => addToCart(food)}>Add To Cart</button>
+                        }
+
                     </div>
                 </div>)}
             </div> : <h1>No Food Items right Now</h1>}
