@@ -63,8 +63,8 @@ function ResturantLogin() {
                         className="input-field"
                         onChange={(e) => setLoginData({ ...loginData, email: e.target.value })}
                     />
+                {error.email && <div style={{ color: "red" }}>{error.email}</div>}
                 </div>
-                {error.email && <span style={{ color: "red" }}>{error.email}</span>}
                 <div className="input-wrapper">
                     <input
                         name="password"
@@ -76,8 +76,8 @@ function ResturantLogin() {
 
                     />
 
+                {error.password && <div style={{ color: "red" }}>{error.password}</div>}
                 </div>
-                {error.password && <span style={{ color: "red" }}>{error.password}</span>}
                 <div className="input-wrapper">
                     <button onClick={handleSubmit} className="button">Login</button>
                 </div>

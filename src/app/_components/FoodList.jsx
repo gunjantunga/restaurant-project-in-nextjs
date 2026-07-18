@@ -17,6 +17,7 @@ function FoodListItem() {
 
         let localData = localStorage.getItem("resturantUser");
         localData = JSON.parse(localData);
+        if(!localData) return;
         try {
 
             let response = await fetch(`http://localhost:3000/api/food/${localData?._id}`, {

@@ -80,7 +80,7 @@ function CustomerDashboard({ cartDetails, removeCartData }) {
             <ul>
                 <li><Link href="/">Login</Link></li>
                 <li><Link href="/">SignUp</Link></li>
-                <li><Link href="/">Cart ({cartCount ? cartCount : 0})</Link></li>
+                <li><Link href={cartCount ? "/cart":"#"}>Cart ({cartCount ? cartCount : 0})</Link></li>
                 <li><Link href="/">Profile</Link></li>
             </ul>
         </div>
