@@ -1,5 +1,6 @@
 "use client"
 import React, { useState } from "react";
+import { useRouter } from "next/navigation";
 
 function UserSignup() {
 
@@ -14,6 +15,7 @@ function UserSignup() {
         contactNumber: ""
 
     });
+    const route = useRouter();
 
     const [formDataError, setFormDataError] = useState({});
     const handleInputChange = (e) => {
@@ -74,7 +76,7 @@ function UserSignup() {
 
         const {confirmPassword,...dataToSend} = userSignupData;
         
-        let respons = await fetch("http://localhost:3000/api/user",{
+        let response = await fetch("http://localhost:3000/api/user",{
             method:"POST",
             headers:{
                 "Content-Type":"application/json"
@@ -82,9 +84,12 @@ function UserSignup() {
             body:JSON.stringify(dataToSend)
         })
 
-        respons = await respons.json();
-        if(respons.success){
-            alert("User created successfully");
+        response = await response.json();
+        if(response.success){
+            let {result} = response;
+            delete result.password;
+            localStorage.setItem("user",JSON.stringify(result));
+            route.push("/");
         }else{
             alert("Something went wrong");
         }
@@ -185,7 +190,7 @@ function UserSignup() {
                     />
                     {formDataError.contactNumber && <p className="error-message">{formDataError.contactNumber}</p>}
                 </div>
-            <div style={{marginBottom:80}} className="input-wrapper">
+            <div className="input-wrapper">
                 <button onClick={handleSignup} className="button">Sign Up</button>
             </div>
         </div>

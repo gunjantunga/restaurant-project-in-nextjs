@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import "../resturant/style.css";
+import { useRouter } from "next/navigation";
 
 
 function CustomerDashboard({ cartDetails, removeCartData }) {
@@ -9,6 +10,9 @@ function CustomerDashboard({ cartDetails, removeCartData }) {
 
     const [cartCount, setCartCount] = useState(0);
     const [cartItem, setCartItem] = useState([]);
+    const [userData, setUserData] = useState({});
+    const route = useRouter();
+
     useEffect(() => {
         if (!cartDetails) return;
 
@@ -42,6 +46,8 @@ function CustomerDashboard({ cartDetails, removeCartData }) {
 
     useEffect(() => {
         const items = JSON.parse(localStorage.getItem("cart")) || [];
+        const user = JSON.parse(localStorage.getItem("user")) || undefined;
+        setUserData(user);
         setCartItem(items);
         setCartCount(items.length);
     }, []);
@@ -66,6 +72,11 @@ function CustomerDashboard({ cartDetails, removeCartData }) {
 
     }, [removeCartData]);
 
+    const logout=()=>{
+        localStorage.removeItem("user");
+        route.push("/user-auth");
+    }
+
     return (
 
         <div className='header-wrapper'>
@@ -78,10 +89,17 @@ function CustomerDashboard({ cartDetails, removeCartData }) {
                 />
             </div>
             <ul>
-                <li><Link href="/">Login</Link></li>
-                <li><Link href="/">SignUp</Link></li>
-                <li><Link href={cartCount ? "/cart":"#"}>Cart ({cartCount ? cartCount : 0})</Link></li>
-                <li><Link href="/">Profile</Link></li>
+                <li><Link href="/">Home</Link></li>
+                {userData ? <>
+                    <li><Link href="/">{userData?.name}</Link></li>
+                    <li><button onClick={logout}>Logout</button></li>
+                </> : 
+                <>
+                    <li><Link href="/">Login</Link></li>
+                    <li><Link href="/user-auth">SignUp</Link></li>
+                </>}
+                <li><Link href={cartCount ? "/cart" : "#"}>Cart ({cartCount ? cartCount : 0})</Link></li>
+                <li><Link href="/">Add Restaurant</Link></li>
             </ul>
         </div>
     )
