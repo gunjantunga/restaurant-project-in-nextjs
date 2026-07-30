@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 
-function UserSignup() {
+function UserSignup(redirect) {
 
 
     const [userSignupData, setUserSignupData] = useState({
@@ -31,7 +31,7 @@ function UserSignup() {
         let error = {};
         let formIsValid = true;
 
-         if (!userSignupData.name) {
+        if (!userSignupData.name) {
             error.name = "Name is required";
             formIsValid = false;
         }
@@ -51,7 +51,7 @@ function UserSignup() {
             error.confirmPassword = "Password and Confirm Password should be same";
             formIsValid = false;
         }
-       
+
         if (!userSignupData.address) {
             error.address = "Address is required";
             formIsValid = false;
@@ -71,26 +71,30 @@ function UserSignup() {
 
     }
 
-    const handleSignup=async ()=>{
-        if(!validateForm()) return;
+    const handleSignup = async () => {
+        if (!validateForm()) return;
 
-        const {confirmPassword,...dataToSend} = userSignupData;
-        
-        let response = await fetch("http://localhost:3000/api/user",{
-            method:"POST",
-            headers:{
-                "Content-Type":"application/json"
+        const { confirmPassword, ...dataToSend } = userSignupData;
+
+        let response = await fetch("http://localhost:3000/api/user", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
             },
-            body:JSON.stringify(dataToSend)
+            body: JSON.stringify(dataToSend)
         })
 
         response = await response.json();
-        if(response.success){
-            let {result} = response;
+        if (response.success) {
+            let { result } = response;
             delete result.password;
-            localStorage.setItem("user",JSON.stringify(result));
-            route.push("/");
-        }else{
+            localStorage.setItem("user", JSON.stringify(result));
+            if (redirect) {
+                route.push("/order-now");
+            } else {
+                route.push("/");
+            }
+        } else {
             alert("Something went wrong");
         }
         setUserSignupData({
@@ -107,89 +111,89 @@ function UserSignup() {
     return (
         <div>
             <div className="input-wrapper">
-                <input 
-                    type="text" 
-                    name="name" 
-                    value={userSignupData.name} 
+                <input
+                    type="text"
+                    name="name"
+                    value={userSignupData.name}
                     onChange={handleInputChange}
-                    placeholder="Enter Name" 
-                    className="input-field" 
+                    placeholder="Enter Name"
+                    className="input-field"
                 />
                 {formDataError.name && <p className="error-message">{formDataError.name}</p>}
 
             </div>
             <div className="input-wrapper">
-                <input 
-                    type="text" 
-                    placeholder="Enter Email" 
-                    className="input-field" 
-                    name="email" 
-                    value={userSignupData.email} 
+                <input
+                    type="text"
+                    placeholder="Enter Email"
+                    className="input-field"
+                    name="email"
+                    value={userSignupData.email}
                     onChange={handleInputChange}
                 />
                 {formDataError.email && <p className="error-message">{formDataError.email}</p>}
 
             </div>
             <div className="input-wrapper">
-                <input 
-                    type="password" 
-                    placeholder="Enter Password" 
-                    className="input-field" 
-                    name="password" 
-                    value={userSignupData.password} 
+                <input
+                    type="password"
+                    placeholder="Enter Password"
+                    className="input-field"
+                    name="password"
+                    value={userSignupData.password}
                     onChange={handleInputChange}
                 />
                 {formDataError.password && <p className="error-message">{formDataError.password}</p>}
 
             </div>
             <div className="input-wrapper">
-                <input 
-                    type="password" 
-                    placeholder="Confirm Password" 
-                    className="input-field" 
-                    name="confirmPassword" 
-                    value={userSignupData.confirmPassword} 
+                <input
+                    type="password"
+                    placeholder="Confirm Password"
+                    className="input-field"
+                    name="confirmPassword"
+                    value={userSignupData.confirmPassword}
                     onChange={handleInputChange}
-                   
+
                 />
                 {formDataError.confirmPassword && <p className="error-message">{formDataError.confirmPassword}</p>}
 
             </div>
             <div className="input-wrapper">
-                <input 
-                    type="text" 
-                    placeholder="Enter City" 
-                    className="input-field" 
-                    name="city" 
-                    value={userSignupData.city} 
+                <input
+                    type="text"
+                    placeholder="Enter City"
+                    className="input-field"
+                    name="city"
+                    value={userSignupData.city}
                     onChange={handleInputChange}
                 />
                 {formDataError.city && <p className="error-message">{formDataError.city}</p>}
 
             </div>
             <div className="input-wrapper">
-                <input 
-                    type="text" 
-                    placeholder="Enter Address" 
-                    className="input-field" 
-                    name="address" 
-                    value={userSignupData.address} 
+                <input
+                    type="text"
+                    placeholder="Enter Address"
+                    className="input-field"
+                    name="address"
+                    value={userSignupData.address}
                     onChange={handleInputChange}
                 />
                 {formDataError.address && <p className="error-message">{formDataError.address}</p>}
 
             </div>
             <div className="input-wrapper">
-                    <input
-                        type="number"
-                        name="contactNumber"
-                        value={userSignupData.contactNumber}
-                        onChange={handleInputChange}
-                        placeholder="Enter Contact number"
-                        className="input-field"
-                    />
-                    {formDataError.contactNumber && <p className="error-message">{formDataError.contactNumber}</p>}
-                </div>
+                <input
+                    type="number"
+                    name="contactNumber"
+                    value={userSignupData.contactNumber}
+                    onChange={handleInputChange}
+                    placeholder="Enter Contact number"
+                    className="input-field"
+                />
+                {formDataError.contactNumber && <p className="error-message">{formDataError.contactNumber}</p>}
+            </div>
             <div className="input-wrapper">
                 <button onClick={handleSignup} className="button">Sign Up</button>
             </div>

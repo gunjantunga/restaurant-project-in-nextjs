@@ -11,7 +11,6 @@ export async function POST(req) {
 
     let success = false;
     const result = await userSchema.findOne({ email: payload.email, password: payload.password });
-    console.log('result',result);
     if (result) {
         success = true;
     }

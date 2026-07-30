@@ -2,8 +2,7 @@
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 
-function UserLogin() {
-
+function UserLogin(redirect) {
     const [userLoginData, setUserLoginData] = useState({
         email: "",
         password: ""
@@ -40,24 +39,28 @@ function UserLogin() {
 
     }
 
-    const handleLogin = async() => {
+    const handleLogin = async () => {
         if (!validateForm()) return;
-        
-        let response = await fetch("http://localhost:3000/api/user/login",{
-            method:"POST",
-            headers:{
-                "Content-Type":"application/json"
+
+        let response = await fetch("http://localhost:3000/api/user/login", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
             },
-            body:JSON.stringify({email:userLoginData.email,password:userLoginData.password})
+            body: JSON.stringify({ email: userLoginData.email, password: userLoginData.password })
         })
 
         response = await response.json();
-        if(response.success){
-            let {result} = response;
+        if (response.success) {
+            let { result } = response;
             delete result.password;
-            localStorage.setItem("user",JSON.stringify(result));
-            route.push("/");
-        }else{
+            localStorage.setItem("user", JSON.stringify(result));
+            if (redirect) {
+                route.push("/order-now");
+            } else {
+                route.push("/");
+            }
+        } else {
             alert("Something went wrong");
         }
         setUserLoginData({

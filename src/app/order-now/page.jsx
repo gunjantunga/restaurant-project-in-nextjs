@@ -4,50 +4,44 @@ import React, { useState, useEffect } from "react";
 import ResturantFooter from "../_components/ResturantFooter";
 import "../globals.css";
 import CustomerDashboard from "../_components/CustomerDashboard";
-import { useRouter } from "next/navigation";
 
-function CartDetails() {
+function OrderNow() {
 
     const [cartDetails, setCartDetails] = useState([]);
-    
+    const [userDetails, setUserDetails] = useState({});
     const total = cartDetails.reduce(
         (sum, item) => sum + item.price,
         0
     );
-
-    const route = useRouter();
-
     useEffect(() => {
         let carts = JSON.parse(localStorage.getItem("cart")) || [];
+        let user = JSON.parse(localStorage.getItem("user")) || {};
+        setUserDetails(user);
         setCartDetails(carts);
     }, [])
 
-    const ordernow=()=>{
-        let user = JSON.parse(localStorage.getItem("user")) || {};
-        if(user?.name){
-            route.push("/order-now");
-        }else{
-            route.push("/user-auth?order-now=true");
-        }
-    }
 
     return (
         <div>
             <CustomerDashboard />
-            {cartDetails.length > 0 ? <div className="food-item-wrapper">
-                {cartDetails.map((food) => <div className="list-item" key={food?._id}>
-                    <div className="list-item-block-1"><img src={food.img_path} width={100} style={{ marginRight: 15 }} /></div>
-                    <div className="list-item-block-2">
-                        <div>{food.name}</div>
-                        <div className="description">{food.description}</div>
 
-                        <button onClick={() => handleRemoveCartItem(food._id)}>Remove from Cart</button>
-                    </div>
-                    <div className="list-item-block-3">Price : {food.price}</div>
-                </div>)}
-            </div> : <h1>No Food Items right Now</h1>}
             <div className="total-wrapper">
                 <div className="block-1">
+                    <h2>User Details</h2>
+                    <div className="row">
+                        <span>Name : </span>
+                        <span>{userDetails?.name}</span>
+                    </div>
+                    <div className="row">
+                        <span>Address : </span>
+                        <span>{userDetails?.address}</span>
+                    </div>
+                    <div className="row">
+                        <span>Mobile : </span>
+                        <span>{userDetails?.contactNumber}</span>
+                    </div>
+                    <h2>Amount Details</h2>
+
                     <div className="row">
                         <span>Food Charges : </span>
                         <span>{total}</span>
@@ -64,12 +58,18 @@ function CartDetails() {
                         <span>Total Amount : </span>
                         <span>{total + (total * 10 / 100) + 100}</span>
                     </div>
+                    <h2>Payment Methods</h2>
+                    <div className="row">
+                        <span>Cash on delivery : </span>
+                        <span>{100}</span>
+                    </div>
+
                 </div>
-                 <div className="block-2"><button onClick={ordernow}>Order Now</button></div>
+                <div className="block-2"><button>Place Your Order</button></div>
             </div>
             <ResturantFooter />
         </div>
     )
 }
 
-export default CartDetails;
+export default OrderNow;
