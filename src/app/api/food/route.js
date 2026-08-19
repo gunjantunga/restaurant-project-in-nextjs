@@ -8,9 +8,12 @@ export async function POST(request) {
 
     const payload = await request.json();
     await mongoose.connect(connectionStr);
+    let success = false;
     const food = new foodSchema({...payload,resto_id:new mongoose.Types.ObjectId(payload.resto_id)});
     const result = await food.save();
-
-    return NextResponse.json({ result, success: true });
+    if(result){
+        success = true;
+    }
+    return NextResponse.json({ result, success });
 
 }

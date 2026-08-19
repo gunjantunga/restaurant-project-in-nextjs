@@ -74,8 +74,7 @@ function UpdateFoodItem() {
 
         try {
 
-            let localData = localStorage.getItem("resturantUser");
-            localData = JSON.parse(localData);
+            let localData = JSON.parse(localStorage.getItem("resturantUser"));
             const {
                 name,
                 price,

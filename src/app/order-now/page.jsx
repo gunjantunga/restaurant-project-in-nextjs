@@ -4,6 +4,7 @@ import React, { useState, useEffect } from "react";
 import ResturantFooter from "../_components/ResturantFooter";
 import "../globals.css";
 import CustomerDashboard from "../_components/CustomerDashboard";
+import { useRouter } from "next/navigation";
 
 function OrderNow() {
 
@@ -13,6 +14,10 @@ function OrderNow() {
         (sum, item) => sum + item.price,
         0
     );
+    const [removeCartData, setRemoveCartData] = useState(false);
+    const route = useRouter();
+
+
     useEffect(() => {
         let carts = JSON.parse(localStorage.getItem("cart")) || [];
         let user = JSON.parse(localStorage.getItem("user")) || {};
@@ -21,9 +26,46 @@ function OrderNow() {
     }, [])
 
 
+    const placeyourorder = async () => {
+
+        try {
+
+            let payload = {
+                user_Id: userDetails._id,
+                foodItemsId: cartDetails.map((item) => item._id).toString(),
+                resto_Id: cartDetails[0].resto_id,
+                deliveryBoy_Id: "1",
+                status: "",
+                amount: total + (total * 10 / 100) + 100
+
+            }
+
+            let response = await fetch("http://localhost:3000/api/order", {
+                method: "post",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(payload),
+            });
+            response = await response.json();
+            if (response.success) {
+                alert("Order confirmed");
+                // localStorage.removeItem("cart");
+                setRemoveCartData(true);
+                route.push("/myprofile");
+            } else {
+                console.log('--->', response.error);
+            }
+
+        } catch (err) {
+            console.log(err);
+        }
+
+    }
+
     return (
         <div>
-            <CustomerDashboard />
+            <CustomerDashboard removeCart={removeCartData} />
 
             <div className="total-wrapper">
                 <div className="block-1">
@@ -65,7 +107,7 @@ function OrderNow() {
                     </div>
 
                 </div>
-                <div className="block-2"><button>Place Your Order</button></div>
+                <div className="block-2"><button onClick={placeyourorder}>Place Your Order</button></div>
             </div>
             <ResturantFooter />
         </div>

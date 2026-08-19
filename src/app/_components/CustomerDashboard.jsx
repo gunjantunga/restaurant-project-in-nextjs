@@ -5,7 +5,7 @@ import "../resturant/style.css";
 import { useRouter } from "next/navigation";
 
 
-function CustomerDashboard({ cartDetails, removeCartData }) {
+function CustomerDashboard({ cartDetails, removeCartData, removeCart }) {
 
 
     const [cartCount, setCartCount] = useState(0);
@@ -72,7 +72,16 @@ function CustomerDashboard({ cartDetails, removeCartData }) {
 
     }, [removeCartData]);
 
-    const logout=()=>{
+    useEffect(() => {
+
+        if (removeCart) {
+            setCartItem([]);
+            setCartCount(0);
+            localStorage.removeItem("cart");
+        }
+    }, [removeCart])
+
+    const logout = () => {
         localStorage.removeItem("user");
         route.push("/user-auth");
     }
@@ -93,11 +102,11 @@ function CustomerDashboard({ cartDetails, removeCartData }) {
                 {userData ? <>
                     <li><Link href="/">{userData?.name}</Link></li>
                     <li><button onClick={logout}>Logout</button></li>
-                </> : 
-                <>
-                    <li><Link href="/">Login</Link></li>
-                    <li><Link href="/user-auth">SignUp</Link></li>
-                </>}
+                </> :
+                    <>
+                        <li><Link href="/">Login</Link></li>
+                        <li><Link href="/user-auth">SignUp</Link></li>
+                    </>}
                 <li><Link href={cartCount ? "/cart" : "#"}>Cart ({cartCount ? cartCount : 0})</Link></li>
                 <li><Link href="/">Add Restaurant</Link></li>
             </ul>
