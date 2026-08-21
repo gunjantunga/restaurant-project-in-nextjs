@@ -56,7 +56,7 @@ function UserLogin(redirect) {
             delete result.password;
             localStorage.setItem("user", JSON.stringify(result));
             if (redirect) {
-                route.push("/order-now");
+                route.push("/");
             } else {
                 route.push("/");
             }

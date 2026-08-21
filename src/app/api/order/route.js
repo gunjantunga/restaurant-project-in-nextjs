@@ -45,24 +45,39 @@ export async function POST(request) {
 
 export async function GET(request) {
     const userId = request.nextUrl.searchParams.get("id");
-    let success = false;
-    await mongoose.connect(connectionStr);
-    let result = await orderSchema.find({ user_Id: userId });
-    if (result) {
 
+    let success = false;
+
+    await mongoose.connect(connectionStr);
+
+    let result = await orderSchema.find({ user_Id: userId });
+
+    if (result.length > 0) {
         let restoData = await Promise.all(
             result.map(async (item) => {
-                let restoInfo = {};
-                restoInfo = await resturantSchema.findOne({ _id: item.resto_Id });
-                restoInfo.amount = item.amount;
-                restoInfo.status = item.status;
-                return restoInfo;
-            }))
-        result = restoData;
-        success = true;
 
+                const restoInfo = await resturantSchema.findOne({
+                    _id: item.resto_Id
+                });
+
+                if (!restoInfo) {
+                    return null;
+                }
+
+                return {
+                    ...restoInfo.toObject(),
+                    amount: item.amount,
+                    status: item.status
+                };
+            })
+        );
+
+        result = restoData.filter(item => item !== null);
+        success = true;
     }
+
     return NextResponse.json({
-        result
-    })
+        result,
+        success
+    });
 }

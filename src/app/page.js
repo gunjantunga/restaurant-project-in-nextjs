@@ -105,7 +105,7 @@ export default function Home() {
       <div className="main-page-banner">
 
         <h1>Food Delivery App</h1>
-        <div className="input-wrapper">
+        <div className="input-wrapper2">
           <input
             type="text"
             value={inputSearch}
@@ -124,7 +124,7 @@ export default function Home() {
       <div className="resturant-list-container">
         {
           restaurants.map((restaurant) => (
-            <div  onClick={()=>route.push(`explore/${restaurant.resturantName}?id=${restaurant._id}`)} className="resturant-wrapper" key={restaurant._id}>
+            <div onClick={() => route.push(`explore/${restaurant.resturantName}?id=${restaurant._id}`)} className="resturant-wrapper" key={restaurant._id}>
               <div className="heading-wrapper">
                 <h3>{restaurant.resturantName}</h3>
                 <h5>Contact : {restaurant.contactNumber}</h5>

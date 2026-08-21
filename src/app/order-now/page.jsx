@@ -35,7 +35,7 @@ function OrderNow() {
                 foodItemsId: cartDetails.map((item) => item._id).toString(),
                 resto_Id: cartDetails[0].resto_id,
                 deliveryBoy_Id: "1",
-                status: "",
+                status: "Confirm",
                 amount: total + (total * 10 / 100) + 100
 
             }

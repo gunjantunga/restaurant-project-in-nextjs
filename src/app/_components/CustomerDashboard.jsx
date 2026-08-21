@@ -100,7 +100,7 @@ function CustomerDashboard({ cartDetails, removeCartData, removeCart }) {
             <ul>
                 <li><Link href="/">Home</Link></li>
                 {userData ? <>
-                    <li><Link href="/">{userData?.name}</Link></li>
+                    <li><Link href="/myprofile">{userData?.name}</Link></li>
                     <li><button onClick={logout}>Logout</button></li>
                 </> :
                     <>
@@ -109,6 +109,8 @@ function CustomerDashboard({ cartDetails, removeCartData, removeCart }) {
                     </>}
                 <li><Link href={cartCount ? "/cart" : "#"}>Cart ({cartCount ? cartCount : 0})</Link></li>
                 <li><Link href="/">Add Restaurant</Link></li>
+                <li><Link href="/deliverypartner">Delivery Partner</Link></li>
+
             </ul>
         </div>
     )
